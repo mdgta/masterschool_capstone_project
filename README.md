@@ -1,5 +1,39 @@
 The Masterschool Capstone Project for creating and hosting a full-stack web app. See rubrics [here](https://masterschool.notion.site/Web-Capstone-Project-06f5167a6d9a436ab698da31d7f1eca9).
 
+# User stories
+As a user, I want to be able to chat with friends and be able to have the following abilities:
+- Join rooms & invite people
+- Sending DMs
+- Block someone from sending me DMs
+- Sending & captioning images
+- Adding emojis
+- Basic markup (links, bold, italic, etc.)
+- `@mention` someone who is a member of the room
+- Search for messages
+- Sending gifs (by pasting exact URL or using a search functionality)
+
+As the site owner, I wish to be able to:
+- Ban accounts (for specified/unlimited duration), on specific rooms or globally
+- Access logs (account creation, room joining/leaving, room/global ban log)
+- Change users' user group settings:
+  - Moderator: are assigned to rooms and can ban users from these specific rooms and can view the logs associated with the room/global logs associated with members of this room)
+  - Admin: can give other users moderator rights/revoke them on specific rooms but not globally. Have the same access as moderators but globally
+  - Restricted: Unable to start new DMs, sending images or gifs
+- Create/close/temporarily disable rooms
+  - No option to permanenty delete from the database, for archival purposes
+
+
+In terms of message data, I want the following data to be accessible:
+- Plain text content (parsing will be done while rendering)
+- Sender
+- Associated room
+- Timestamp
+- A `restricted: true` flag will be added to messages sent by someone while they have the Restricted user group
+
+More data may be added accordingly, e.g. gifs will have a `"type": "media"` with a `url` property and the `text` will be caption
+
+> As basic database requirement, every created account is case-insensitively unique, meaning someone cannot create an account called **Foo** if there's already an account named **foo**
+
 # Backend
 
 > to be added
