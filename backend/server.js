@@ -1,4 +1,5 @@
 import express from "express";
+import connectDB from "./config/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
@@ -9,6 +10,9 @@ dotenv.config();
 
 // start server
 const server = express();
+
+// connect to database
+connectDB();
 
 // allow accepting cross-origin data and accessing request body
 server.use(cors());
