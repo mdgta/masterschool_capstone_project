@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import userRoutes from "./routes/userRoutes.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 
 // access environmental variables
@@ -16,7 +17,8 @@ server.use(express.urlencoded({
 	extended: false
 }));
 
-// routes (to be added)
+// routes
+server.use("/api/user", userRoutes);
 
 // error handling
 server.use(errorMiddleware);
