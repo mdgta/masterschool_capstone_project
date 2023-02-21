@@ -1,0 +1,18 @@
+{
+	"auth": {
+		"register": {
+			"missingDataError": "account creation: missing data. please make sure that you pass an email, name, password and confirmed password",
+			"passwordConfirmError": "account creation: passwords don't match",
+			"passwordWeakError": "account creation: password too weak",
+			"nameValidityError": "account creation: name can only contain english letters, digits, underscores or hyphens, and must include at least 4 characters",
+			"nameTakenError": "account creation: name already used",
+			"emailTakenError": "account creation: email already used"
+		},
+		"login": {
+			"invalidCredentialsError": "login: invalid login details"
+		}
+	},
+	"strings": {
+		"genericError": "<invalid string path>"
+	}
+}

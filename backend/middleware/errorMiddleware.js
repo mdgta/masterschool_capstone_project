@@ -1,6 +1,6 @@
 const errorMiddleware = (err, req, res, next) => {
 	// status code (if passed)
-	const {statusCode} = req;
+	const {statusCode} = res;
 	// response object
 	const responseObject = {
 		error: err.message
