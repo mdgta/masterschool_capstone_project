@@ -20,7 +20,8 @@ re.simpleNameWithShortNumber = /^[A-Z][a-z]+\d{1,2}$/;
 re.idiotRadar = /hunter2/i;
 // username: valid pattern
 // (can only contains english letters, digits, underscores or minus signs)
-re.usernameValidPattern = /[^a-zA-Z0-9_\-]/;
+// at least 4 characters long
+re.usernameValidPattern = /^[a-zA-Z0-9_\-]{4,}$/;
 
 
 
@@ -45,8 +46,7 @@ const isNameValid = (s) => (
 	// WARNING! if more characters are allowed in the future, review nameTaken in areRegistrationCredentialsValid
 	// to see if there's need to escape more control characters in the findOne regex
 	typeof s === "string" && // is string
-	s.length >= 4 && // not shorter than 4 characters
-	!re.usernameValidPattern.test(s) // does not contain invalid characters (see re for full description)
+	re.usernameValidPattern.test(s) // valid pattern (see re for full description)
 );
 
 const generateToken = (id) => {
