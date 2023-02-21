@@ -22,7 +22,7 @@ server.use(express.urlencoded({
 }));
 
 // routes
-server.use("/api/user", userRoutes);
+server.use("/api/auth", userRoutes);
 
 // error handling
 server.use(errorMiddleware);
