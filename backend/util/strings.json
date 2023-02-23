@@ -12,6 +12,9 @@
 			"invalidCredentialsError": "login: invalid login details"
 		}
 	},
+	"protect": {
+		"tokenValidityError": "bad token"
+	},
 	"strings": {
 		"genericError": "<invalid string path>"
 	}
