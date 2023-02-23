@@ -146,3 +146,22 @@ An JSON object with an `error` property, containing the error message:
 |Cause|Message|
 |-|-|
 |Invalid E-mail/passowrd|auth.login.invalidCredentialsError|
+### 🛡️ POST `/api/auth/me`
+
+> 🛡️ **Protected route**
+> user must be logged in
+
+Returns the user's data from the database, excluding their password.
+
+**Requires a bearer token.**
+
+#### Success response
+An JSON object the user data, password excluded.
+
+#### Error response
+
+An JSON object with an `error` property, containing the error message:
+
+|Cause|Message|
+|-|-|
+|No valid token coressponding to an existing user present|protect.tokenValidityError|

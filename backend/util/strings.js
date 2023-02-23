@@ -3,8 +3,6 @@ import strings from "./strings.json" assert {type: "json"};
 // get string by path in json structure
 // e.g. "auth.register.passwordWeakError"
 export const str = (path) => {
-	console.log(path);
-	console.log(strings);
 	const separator = ".";
 	let result;
 	try {

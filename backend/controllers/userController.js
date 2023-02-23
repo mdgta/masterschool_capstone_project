@@ -122,3 +122,8 @@ export const login = asyncHandler(async (req, res) => {
 	const token = generateToken(user._id);
 	res.send({token});
 });
+
+export const me = asyncHandler(async (req, res) => {
+	 const {user} = req;
+	res.json(user);
+});
