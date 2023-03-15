@@ -12,6 +12,13 @@
 			"invalidCredentialsError": "login: invalid login details"
 		}
 	},
+	"logs": {
+		"creationErrorDateExists": "log creation: date already exist. existing entries can be edited but not recreated",
+		"deleteErrorDateDoesntExist": "log deletion: cannot delete log from $1 as it does not exist",
+		"updateErrorDocumentNotFound": "log update: cannot update log from $1 as it does not exist",
+		"updateErrorOther": "log update: cannot update log from $1. please make sure your input is valid",
+		"deleteErrorZeroDeletionUnknown": "log deletion: cannot delete due to unknown reason"
+	},
 	"protect": {
 		"tokenValidityError": "bad token"
 	},

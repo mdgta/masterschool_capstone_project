@@ -1,8 +1,8 @@
 # To-do List
 
 ## Backend
-- [ ] Authentication is set up with JWT and bcrypt
-- [ ] There are register, login, and logout routes
+- [x] Authentication is set up with JWT and bcrypt
+- [x] There are register, login, and logout routes
 - [ ] There are three or more collections
 - [ ] There are protected routes (accessed only with JWT)
 - [ ] Full CRUD functionality is implemented for at least one collection
