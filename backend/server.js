@@ -3,6 +3,7 @@ import connectDB from "./config/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
+import logsRoutes from "./routes/logsRoutes.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 
 // access environmental variables
@@ -23,6 +24,7 @@ server.use(express.urlencoded({
 
 // routes
 server.use("/api/auth", userRoutes);
+server.use("/api/logs", logsRoutes);
 
 // error handling
 server.use(errorMiddleware);

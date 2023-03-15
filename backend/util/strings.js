@@ -1,8 +1,11 @@
 import strings from "./strings.json" assert {type: "json"};
 
+// regular expression for finding optional parameters
+const re = /\$(\d+)/g;
+
 // get string by path in json structure
 // e.g. "auth.register.passwordWeakError"
-export const str = (path) => {
+export const str = (path, ...params) => {
 	const separator = ".";
 	let result;
 	try {
@@ -22,5 +25,9 @@ export const str = (path) => {
 		return strings.strings.genericError;
 	}
 	// return result (if success)
-	return result;
+	return result.replace(re, (m, iPlusOne) => {
+		const i = Number(iPlusOne) - 1,
+			param = params[i];
+		return param ?? `$${iPlusOne}`;
+	});
 }

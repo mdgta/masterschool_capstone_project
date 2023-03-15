@@ -19,7 +19,7 @@ export const protect = asyncHandler(async (req, res, next) => {
 		throw new Error(str("protect.tokenValidityError"));
 	}
 	// get token from authentication
-	const [bearer, token] = auth.split(" ");
+	const [, token] = auth.split(" ");
 	let tokenData;
 	const {JWT_SECRET} = process.env;
 	// verify token
