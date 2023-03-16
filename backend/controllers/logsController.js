@@ -22,6 +22,28 @@ import {str} from "../util/strings.js";
 // 	res.json({test: true})
 // });
 
+// properties that are safe to return in a
+const safeProperties = {
+	log: ["date", "symptoms", "description"],
+	symptom: ["name", "intensity"]
+}
+
+// remove unwanted logs (was having issues using .select())
+const sanitizeLog = (log) => {
+	const asObject = log.toObject();
+	const safeEntries = Object.entries(asObject).filter(
+		([key]) => safeProperties.log.includes(key)
+	);
+	const safeObj = Object.fromEntries(safeEntries);
+	safeObj.symptoms = safeObj.symptoms.map(symptom => {
+		const safeSymptom = Object.entries(symptom).filter(
+			([key]) => safeProperties.symptom.includes(key)
+		);
+		return Object.fromEntries(safeSymptom)
+	});
+	return safeObj;
+}
+
 export const getLogs = asyncHandler(async (req, res) => {
 	const {user} = req;
 	const logs = await Log.find({
@@ -49,7 +71,8 @@ export const postLog = asyncHandler(async (req, res) => {
 		symptoms,
 		description
 	});
-	res.status(201).json(log);
+	const safeLog = sanitizeLog(log);
+	res.status(201).json(safeLog);
 });
 
 export const updateLog = asyncHandler(async (req, res) => {
@@ -80,7 +103,8 @@ export const updateLog = asyncHandler(async (req, res) => {
 			throw new Error();
 		}
 		// return result
-		res.json(updated);
+		const safeUpdated = sanitizeLog(updated);
+		res.json(safeUpdated);
 	} catch (err) {
 		// throw error if failed (404 in case document with this date does not exist)
 		let status,
