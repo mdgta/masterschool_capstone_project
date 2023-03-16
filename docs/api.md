@@ -115,12 +115,9 @@ A JSON array of objects, each corresponding to a daily entry by the user (see th
 #### Error response
 *None.*
 
-
-
-
 ### 🛡️ POST `/api/logs`
 
-Creates a new entry of a daily log
+Creates a new entry of a daily log.
 
 Takes the following parameters:
 
@@ -132,8 +129,7 @@ Each symptom is an `object` formatted as:
 - `description`- a `string` of symptoms
 
 #### Success response
-A JSON object of the created entry, with additional properties:
-- `user`- the ID of the owner
+A JSON object of the created entry:
 
 ```json
 {
@@ -159,5 +155,50 @@ A JSON object with an `error` property, containing the error message:
 |-|-|
 |Document with this date already exists|logs.creationErrorDateExists|
 
+### 🛡️ PUT `/api/logs`
 
-(to add: PUT and DELETE)
+Modifies an existing entry.
+
+Takes the same parameters as [`POST /api/logs`](#%EF%B8%8F-post-apilogs):
+- `date` is required
+- `symptoms` and `description` are optional. Omitting any will keep their previous value
+
+#### Success response
+A JSON object of the updated entry. See [POST § Success response](#success-response-4) for structure.
+
+#### Error response
+A JSON object with an `error` property, containing the error message:
+
+|Cause|Message|
+|-|-|
+|Attempting to update a log that doesn't exist|logs.updateErrorDocumentNotFound|
+|Cannot update due to invalid request body structure or another reason|logs.updateErrorOther|
+
+
+
+
+
+
+
+
+
+
+
+
+### 🛡️ DELETE `/api/logs`
+
+Deletes an entry.
+
+Takes only 1 parameter:
+- `date`- same as in [`POST /api/logs`](#%EF%B8%8F-post-apilogs)
+
+#### Success response
+A JSON object of the deleted entry. See [POST § Success response](#success-response-4) for structure.
+
+#### Error response
+A JSON object with an `error` property, containing the error message:
+
+|Cause|Message|
+|-|-|
+|Attempting to delete a log that doesn't exist|logs.deleteErrorDateDoesntExist|
+|The request is valid but no deletions were made due to some other reason|logs.deleteErrorZeroDeletionUnknown|

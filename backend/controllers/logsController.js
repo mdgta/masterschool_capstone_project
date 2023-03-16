@@ -142,7 +142,8 @@ export const deleteLog = asyncHandler(async (req, res) => {
 	if (!deletion.deletedCount) {
 		// a valid entry for deletion was found, but for some reason 0 items have been deleted
 		res.status(500);
-		throw new Error(str("logs.deleteErrorDateDoesntExist"));
+		throw new Error(str("logs.deleteErrorZeroDeletionUnknown"));
 	}
-	res.json({entry});
+	const safeEntry = sanitizeLog(entry);
+	res.status(201).json(safeEntry);
 });
