@@ -1,6 +1,25 @@
 
 # API
 
+## TLl;DR
+| Method | Path | Use |
+|-|-|-|
+| `POST` | `/api/auth/register` | Creating account |
+| `POST` | `/api/auth/login` | Logging in |
+| `POST` | `/api/auth/me` | Logged-in user's info |
+| `GET` | `/api/logs` | Get my logs |
+| `POST` | `/api/logs` | Add log |
+| `PUT` | `/api/logs` | Edit log |
+| `DELETE` | `/api/logs` | Delete log |
+| `GET` | `/api/symptoms/` | Get custom list of symptoms |
+| `PUT` | `/api/symptoms/` | Update the list of symptoms |
+| `POST` | `/api/symptoms/reset` | Reset own custom symptom list |
+
+## Errors
+> **Error messages are saved in the [`strings.json`](../backend/util/strings.json) file**
+>
+> For brevity of the docs, errors are presented by their respective error string, and not the actual message. You can refer back to the `strings.json` file to see the full message.
+
 ## Authentication
 ### POST `/api/auth/register`
 
@@ -89,12 +108,9 @@ A JSON object with an `error` property, containing the error message:
 |-|-|
 |No valid token coressponding to an existing user present|protect.tokenValidityError|
 
-
-
-
 ## 🛡️ Logs
 > 🛡️ **Protected routes**
-> 
+>
 > All routes under `/api/logs` require proper authentication with a valid bearer token.
 > For brevity purposes, this section does not list authentication-related errors, but they will be returned if no valid token exists in a user's request.
 >
@@ -122,11 +138,16 @@ Creates a new entry of a daily log.
 Takes the following parameters:
 
 - `date`- a `string` representing the entry's date, as a `YYYY-MM-DD`
-- `symptoms`- an `array` of symptoms
-Each symptom is an `object` formatted as:
-  - `name`- the name of the symptom (`string`). Note that the name is not pattern limitations, but it must be a string
-  - `intensity`- how severe the symptom is. A `number` (integer) between 0 and 4 (including)
-- `description`- a `string` of symptoms
+- `symptoms`- an `array` of "*scaledSymptoms*" **(named so just to prevent confusion with the plain, "unscaled" symptom objects)**
+  Each *scaledSymptoms* is an `object` containing the following properties:
+  - `intensity`- how severe the symptom is. A `number` (integer) between 1 and 3 (including)
+  - `symptom`- a `symptom` object- see [Symptom structure](#symptom-structure) for more info
+- `description` (optional)- a `string` for a short description
+> **Note:** while a *scaledSymptom* object in the `symptoms` array, and the `color` of the symptom objects themselves, both contain a number range (1-3 and 1-5, respectively), there's no technical reason that requires having them reflect an "intensity" or have a matching value, e.g.:
+> ```json
+> {"symptom": {"name": "Headache", "color": "r4"}, "intensity": 1}
+> ```
+> i.e., in the example above, the `color` has a value with a saturation of `4`, while the symptom entry's intensity is `1`.
 
 #### Success response
 A JSON object of the created entry:
@@ -136,12 +157,18 @@ A JSON object of the created entry:
     "date": "2020-03-14",
     "symptoms": [
         {
-            "name": "Headache",
-            "intensity": 3
+            "symptom": {
+                "name": "Headache",
+                "color": "r1"
+            },
+            "intensity": 3,
         },
         {
-            "name": "Nosebleed",
-            "intensity": 4
+            "symptom": {
+                "name": "Nosebleed",
+                "color": "b3"
+            },
+            "intensity": 1,
         }
     ],
     "description": "Some description"
@@ -174,17 +201,6 @@ A JSON object with an `error` property, containing the error message:
 |Attempting to update a log that doesn't exist|logs.updateErrorDocumentNotFound|
 |Cannot update due to invalid request body structure or another reason|logs.updateErrorOther|
 
-
-
-
-
-
-
-
-
-
-
-
 ### 🛡️ DELETE `/api/logs`
 
 Deletes an entry.
@@ -202,3 +218,86 @@ A JSON object with an `error` property, containing the error message:
 |-|-|
 |Attempting to delete a log that doesn't exist|logs.deleteErrorDateDoesntExist|
 |The request is valid but no deletions were made due to some other reason|logs.deleteErrorZeroDeletionUnknown|
+
+## 🛡️ Symptoms
+> 🛡️ **Protected routes**
+>
+> All routes under `/api/symptoms` require proper authentication with a valid bearer token.
+> For brevity purposes, this section does not list authentication-related errors, but they will be returned if no valid token exists in a user's request.
+>
+> For more information, see the [authentication](#authentication) section.
+
+> **Important note!**
+>
+> The routes under `/api/symptoms` are responsible for handling the **user's custom presets of available list of symptoms**. Therefore, unlike routes in `/api/logs`, the plain symptom data does not include the `intensity` property, which is exclusively used for entries
+
+> **Database info**
+>
+> `/api/symptoms` routes do not implement full CRUD functionality: the backend treats every user as if they have an existing symptoms preset, and if one does not exist, it will be created first. And each time, the only part exposed to the user is the actual symptoms array, and not the full object that associates a given collection document to a particular user. Therefore it is possible to set one's symptoms to an empty array, but not actually deleting it.
+
+### Symptom structure
+Symptoms are structured in the following way:
+```json
+{
+  "name": "Headache",
+  "color": "r3"
+}
+```
+Where:
+  - `name`- the name of the symptom (`string`). Note that the name has not pattern limitations, but it must be a string
+  - `color`- a `string` representing a color value (see [color](#color) section)
+
+#### `color`
+A `color` is a string, structured as `<color name><saturation>`, e.g. `blue1`.
+
+In the table below, the left column represents the available color names (red, orange, yellow, green, blue and violet, respectively), and the other rows represent the intensity value:
+
+|Color|1|2|3|4|5|
+|-|-|-|-|-|-|
+|r|#FCC|#FBB|#FAA|#F99|#F88
+|o|#FFC|#FFB|#FFA|#FF9|#FF8
+|y|#CFC|#BFB|#AFA|#9F9|#8F8
+|g|#CFF|#BFF|#AFF|#9FF|#8FF
+|b|#CCF|#BBF|#AAF|#99F|#88F
+|v|#FCF|#FBF|#FAF|#F9F|#F8F
+
+### Defaults
+For every account, the defaults:
+- [`symptoms.json`](../backend/data/symptoms.json)
+
+### 🛡️ GET `/api/symptoms`
+Returns an array the user's symptom presets.
+
+#### Success response
+A JSON array of objects, each corresponding to a symptom:
+
+```json
+[
+  {"name": "Headache", "color": "r3"},
+  {"name": "Nosebleed", "color": "b5"}
+]
+```
+
+#### Error response
+*None.*
+
+### 🛡️ PUT `/api/symptoms`
+Sends a new array of symptoms (the array needs to be sent as the request body).
+
+#### Success response
+The new array of symptoms.
+
+#### Error response
+|Cause|Message|
+|-|-|
+|Request body is not an array|symptoms.updateNoSymptomsProvided|
+|One or ore of the symptoms in the array don't contain a name/valid color|symptoms.updateInvalidStructure|
+
+### 🛡️ POST `/api/symptoms/reset`
+Resets the user's custom symptoms and reloads.
+
+#### Success response
+A JSON array of the default symptoms.
+
+#### Error response
+*None.*

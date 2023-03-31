@@ -19,6 +19,10 @@
 		"deleteErrorDateDoesntExist": "log deletion: cannot delete log from $1 as it does not exist",
 		"deleteErrorZeroDeletionUnknown": "log deletion: cannot delete due to unknown reason"
 	},
+	"symptoms": {
+		"updateNoSymptomsProvided": "bookmarked symptoms update: a symptoms field must be included with an array of the new symptoms",
+		"updateInvalidStructure": "bookmarked symptoms update: one or more of the symptoms are not valid. make sure to include name and color fields"
+	},
 	"protect": {
 		"tokenValidityError": "bad token"
 	},

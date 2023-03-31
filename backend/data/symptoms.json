@@ -1,0 +1,34 @@
+[
+	{
+		"name": "Nausea",
+		"color": "r1"
+	},
+	{
+		"name": "Bloating",
+		"color": "o2"
+	},
+	{
+		"name": "Abdominal spasms",
+		"color": "y3"
+	},
+	{
+		"name": "Intestinal issues",
+		"color": "g4"
+	},
+	{
+		"name": "Mood swings",
+		"color": "b5"
+	},
+	{
+		"name": "Appetite changes",
+		"color": "v3"
+	},
+	{
+		"name": "Libido shifts",
+		"color": "r5"
+	},
+	{
+		"name": "Acne",
+		"color": "o4"
+	}
+]

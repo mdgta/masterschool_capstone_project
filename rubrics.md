@@ -3,11 +3,11 @@
 ## Backend
 - [x] Authentication is set up with JWT and bcrypt
 - [x] There are register, login, and logout routes
-- [ ] There are three or more collections
-- [ ] There are protected routes (accessed only with JWT)
-- [ ] Full CRUD functionality is implemented for at least one collection
-- [ ] All routes work as expected
-- [ ] All errors are handled
+- [x] There are three or more collections
+- [x] There are protected routes (accessed only with JWT)
+- [x] Full CRUD functionality is implemented for at least one collection
+- [x] All routes work as expected
+- [x] All errors are handled
 
 # Frontend
 - [ ] Interfaces with the backend API

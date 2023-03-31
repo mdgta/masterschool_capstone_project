@@ -25,23 +25,37 @@ import {str} from "../util/strings.js";
 // properties that are safe to return in a
 const safeProperties = {
 	log: ["date", "symptoms", "description"],
-	symptom: ["name", "intensity"]
+	symptomOuter: ["intensity", "symptom"],
+	symptomInner: ["name", "intensity", "color"]
 }
 
 // remove unwanted logs (was having issues using .select())
 const sanitizeLog = (log) => {
-	const asObject = log.toObject();
-	const safeEntries = Object.entries(asObject).filter(
-		([key]) => safeProperties.log.includes(key)
-	);
-	const safeObj = Object.fromEntries(safeEntries);
-	safeObj.symptoms = safeObj.symptoms.map(symptom => {
-		const safeSymptom = Object.entries(symptom).filter(
-			([key]) => safeProperties.symptom.includes(key)
-		);
-		return Object.fromEntries(safeSymptom)
+	const safeLog = log.toObject();
+	// sanitize log
+	for (const prop in safeLog) {
+		if (!safeProperties.log.includes(prop)) {
+			delete safeLog[prop];
+		}
+	}
+	// tried using Object.entries() and Object.fromEntries with .map() and .filter(), but
+	// structurally it became very unreadable, with loops it's a lot easier to manage
+	safeLog.symptoms.forEach(symptom => {
+		// sanitize outer symptom obects (intensity + inner symptom)
+		for (const prop in symptom) {
+			if (!safeProperties.symptomOuter.includes(prop)) {
+				delete symptom[prop];
+				continue;
+			}
+			// sanitize outer symptom obects (name + color)
+			for (const propInner in symptom.symptom) {
+				if (!safeProperties.symptomInner.includes(propInner)) {
+					delete symptom.symptom[propInner];
+				}
+			}
+		}
 	});
-	return safeObj;
+	return safeLog;
 }
 
 export const getLogs = asyncHandler(async (req, res) => {

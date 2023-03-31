@@ -4,7 +4,7 @@
   "description": "capstone project",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon backend/server.js",
+    "server": "nodemon backend/index.js",
     "web": "cd frontend && npm run dev"
   },
   "keywords": [],
@@ -21,6 +21,6 @@
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.9.1"
+    "mongoose": "^7.0.3"
   }
 }
