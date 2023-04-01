@@ -98,7 +98,11 @@ Returns the user's data from the database, excluding their password.
 **Requires a bearer token.**
 
 #### Success response
-A JSON object the user data, password excluded.
+A JSON object with `user` and `email` properties of the registered user:
+
+```json
+{"email": "foo@bar", "name": "loremipsum"}
+```
 
 #### Error response
 

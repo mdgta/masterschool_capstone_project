@@ -125,5 +125,6 @@ export const login = asyncHandler(async (req, res) => {
 
 export const me = asyncHandler(async (req, res) => {
 	 const {user} = req;
-	res.json(user);
+	 const {name, email} = user;
+	res.json({name, email});
 });

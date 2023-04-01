@@ -2,26 +2,6 @@ import asyncHandler from "express-async-handler";
 import Log from "../models/logModel.js";
 import {str} from "../util/strings.js";
 
-// export const day = asyncHandler(async (req, res, next) => {
-// 	console.log("a");
-// 	next();
-// });
-
-// export const month = asyncHandler(async (req, res, next) => {
-// 	console.log("b");
-// 	next();
-// });
-
-// export const year = asyncHandler(async (req, res, next) => {
-// 	console.log("c");
-// 	next();
-// });
-
-// export const logs = asyncHandler(async (req, res, next) => {
-// 	console.log({"req.dateRange": req.dateRange});
-// 	res.json({test: true})
-// });
-
 // properties that are safe to return in a
 const safeProperties = {
 	log: ["date", "symptoms", "description"],
@@ -63,7 +43,7 @@ export const getLogs = asyncHandler(async (req, res) => {
 	const logs = await Log.find({
 		user: user.id
 	});
-	res.json(logs);
+	res.json(logs.map(sanitizeLog));
 });
 
 export const postLog = asyncHandler(async (req, res) => {
