@@ -88,6 +88,7 @@ const areRegistrationCredentialsValid = async ({name, email, password, confirmPa
 
 export const register = asyncHandler(async (req, res) => {
 	const {name, email, password, confirmPassword} = req.body;
+	console.log("/api/register", {name, email, password, confirmPassword});
 	if (!(name && email && password && confirmPassword)) {
 		// missing data
 		throw new Error(str("auth.register.missingDataError"));
